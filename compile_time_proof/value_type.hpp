@@ -14,8 +14,7 @@ namespace ctp
 		static constexpr T min = Min;
 		static constexpr T max = Max;
 		T val;
-	public:
-		explicit integer_value(T v) :val(v)
+		void value_check(T const& v)
 		{
 			if (!(min <= v && v <= max))
 			{
@@ -24,12 +23,22 @@ namespace ctp
 				throw std::invalid_argument(ss.str());
 			}
 		}
+	public:
+		integer_value(T const& v) :val(v)
+		{
+			value_check(v);
+		}
 		integer_value(integer_value const&) = default;
 		integer_value(integer_value&&) = default;
 		integer_value& operator=(integer_value const&) = default;
 		integer_value& operator=(integer_value&&) = default;
+		integer_value& operator=(T const& rhs)
+		{
+			value_check(rhs);
+			val = rhs;
+		}
 
-		explicit operator T()const
+		operator T()const
 		{
 			return val;
 		}
